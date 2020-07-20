@@ -1,0 +1,18 @@
+## Champs Annonces
+
+ID : Int
+User : String
+Titre : String
+Description : String
+Categorie : String
+Photos : Contenu Image // Optionnel
+mail : String
+Numero de Telephone : Int
+Ville : String
+Geolocalisation
+createdAt: date
+lastUpdatedAt: date
+
+
+
+

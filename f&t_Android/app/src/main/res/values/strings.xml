@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">F&amp;T_Android</string>
+    <string name="annonces">Annonces:</string>
+    <string name="title_activity_nav">NavActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_notif">Notification</string>
+    <string name="nav_account">Account</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_new_ad">Nouvelle Annonce</string>
+    <string name="title_account">Account</string>
+    <string name="deconnexion">Deconnexion</string>
+    <string-array name="Type">
+        <item>Don</item>
+        <item>Echange</item>
+    </string-array>
+</resources>
