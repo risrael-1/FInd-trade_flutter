@@ -145,8 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.green,
                           child: Text('Valider'),
                           onPressed: () async {
-                            print(nameController.text);
-                            print(passwordController.text);
+                            print("UserName = " + nameController.text);
+                            print("Password = " + passwordController.text);
                             home(context);
                             /**var username = nameController.text;
                             var password = passwordController.text;
