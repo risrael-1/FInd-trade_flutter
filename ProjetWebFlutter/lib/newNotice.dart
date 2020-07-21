@@ -125,7 +125,10 @@ void NewNotice(BuildContext context) {
                         color: Colors.green,
                         child: Text('Ajouter'),
                         onPressed: () {
-
+                          print(labelAnnonce.text);
+                          print(categorie.text);
+                          print(description.text);
+                          print(imageUrl.text);
                         },
                       ),
                     )),
