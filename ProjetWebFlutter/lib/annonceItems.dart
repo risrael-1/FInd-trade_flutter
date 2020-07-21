@@ -27,6 +27,15 @@ class AnnonceItems extends StatelessWidget {
           subtitle: Text(
             annonce.type,
           ),
+          trailing: IconButton(
+            icon: Icon(
+                Icons.delete,
+              color: Colors.red,
+            ),
+            onPressed: () {
+            },
+
+          )
         ),
         onPressed: () {
           detailAnnonce(context, annonce);
