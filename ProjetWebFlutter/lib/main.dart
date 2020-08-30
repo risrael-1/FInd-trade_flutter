@@ -1,12 +1,17 @@
+import 'package:ProjetWebFlutter/service/apiService.dart';
+import 'package:ProjetWebFlutter/user.dart';
 import 'package:flutter/material.dart';
 import 'package:ProjetWebFlutter/newAccount.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'home.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' show json, base64, ascii;
+import 'dart:convert' show ascii, base64, json, jsonDecode;
 
 const SERVER_IP = 'http://findandtrade.herokuapp.com';
 final storage = FlutterSecureStorage();
+
+var loginUser;
 
 void main() {
   runApp(MyApp());
@@ -101,12 +106,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
                         child: TextFormField(
-                          controller: nameController,
                           validator: (value) {
-                            if(value.isEmpty) {
-                              return 'Veuillez rentrer un nom d\'utilisateur';
-                            }
-                          },
+                          if (value.isEmpty) {
+                            return 'Vous devez entrer un votre pseudo';
+                          }
+                          return null;
+                        },
+                          controller: nameController,
+
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Nom d\'utilisateur',
@@ -116,15 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(150, 10, 150, 20),
                         child: TextFormField(
-                          obscureText: true,
-                          controller: passwordController,
-                          validator: (value) {
-                            if(value.length < 3) {
+                          validator: (input) {
+                            if (input.isEmpty) {
+                              return 'Vous devez entrer un mot de passe';
+                            }
+                            if (input.length < 3) {
                               return 'Votre mot de passe est trop petit';
-                            } else if(value.length > 20) {
+                            } else if (input.length > 18) {
                               return 'Votre mot de passe est trop grand';
                             }
+                            return null;
                           },
+                          obscureText: true,
+                          controller: passwordController,
+
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Mot de passe',
@@ -145,9 +157,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.green,
                           child: Text('Valider'),
                           onPressed: () async {
-                            print("UserName = " + nameController.text);
-                            print("Password = " + passwordController.text);
-                            home(context);
+                            if(nameController.text == "" || passwordController.text == ""){
+                              print("cestpasbon");
+                              Fluttertoast.showToast(
+                                msg: "Veuillez renseigner tous les champs",
+                                timeInSecForIosWeb: 2,
+                              );
+                            }
+                            else {
+                              print("cestpasbon");
+                              loginUser = nameController.text;
+                              print("UserName = " + nameController.text);
+                              print("Password = " + passwordController.text);
+                              print(loginUser);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      HomePage(userToken: null, userAdmin: null)
+                              ));
+                            }
+                            //logIn(context, nameController, passwordController);
                             /**var username = nameController.text;
                             var password = passwordController.text;
 
@@ -187,5 +215,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     ))
               ],
             )));
+  }
+
+  Future<bool> logIn(
+      BuildContext context,
+      TextEditingController _usernameController,
+      TextEditingController _passwordController) async {
+    String tokenUser = await ApiServices.connectProfile(
+        _usernameController.text, _passwordController.text);
+    User user = await ApiServices.fetchProfile(
+        jsonDecode(tokenUser)['token'].toString());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                userAdmin: user,
+                userToken: jsonDecode(tokenUser)['token'].toString())),
+      );
   }
 }

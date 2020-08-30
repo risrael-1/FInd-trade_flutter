@@ -1,117 +1,152 @@
 import 'package:flutter/material.dart';
-import 'apiService.dart';
+import 'service/apiService.dart';
 import 'annonces.dart';
 import 'annonceItems.dart';
 import 'package:ProjetWebFlutter/newNotice.dart';
 import 'package:ProjetWebFlutter/profil.dart';
+import 'package:ProjetWebFlutter/user.dart';
 import 'dart:convert' show json, base64, ascii;
 import 'package:http/http.dart' as http;
 import 'main.dart';
 
-void home(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute(
-    builder: (BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            title: const Text('Annonces'),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.home),
-                tooltip: 'Accueil',
-                onPressed: () {
-                  home(context);
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.add),
-                tooltip: 'Créer une annonce',
-                onPressed: () {
-                  NewNotice(context);
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.account_circle),
-                tooltip: 'Profil',
-                onPressed: () {
-                  profil(context);
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.settings_power),
-                tooltip: 'Déconnexion',
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/signin');
-                },
-              )
-            ]
-        ),
-        body: ListView(
-          children: <Widget>[
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                child: Text(
-                  'Toutes les annonces :',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0),
-                ),
-              ),
+
+class HomePage extends StatelessWidget {
+  final User userAdmin;
+  final String userToken;
+
+  HomePage({Key key, @required this.userAdmin, @required this.userToken})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 0.0,
+      height: 0.0,
+      child: _buildContent(userAdmin, userToken, context),
+    );
+  }
+}
+
+  Widget _buildContent(User user, String userToken, BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: const Text('Annonces'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.home),
+              tooltip: 'Accueil',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>
+                        HomePage(
+                          userAdmin: user,
+                          userToken: userToken,
+                        )
+                ));
+              },
             ),
-            FutureBuilder(
-              future: ApiServices.getAnnonces(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                    break;
-                  case ConnectionState.done:
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text("Error: ${snapshot.error}"),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      final List<Annonce> annonces = snapshot.data;
-                      if (annonces.isEmpty) {
-                        return Center(
-                          child: Text("Empty list"),
-                        );
-                      }
-                      return SizedBox(
-                        height: 1000,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(500,50, 500,0),
-                          child: ListView.builder(
-                            itemCount: annonces.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return AnnonceItems(
-                                annonce: annonces[index],
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Text("No data"),
-                      );
-                    }
-                    break;
-                  default:
-                    return Container();
-                    break;
-                }
+            IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: 'Créer une annonce',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>
+                        NewNotice(
+                          userAdmin: user,
+                          userToken: userToken,
+                        )
+                ));
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.account_circle),
+              tooltip: 'Profil',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>
+                        ProfilPage(
+                          userAdmin: user,
+                          userToken: userToken,
+                        )
+                ));
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings_power),
+              tooltip: 'Déconnexion',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/signin');
               },
             )
-          ],
-        ),
-      );
-    },
-  ));
-}
+          ]
+      ),
+      body: ListView(
+        children: <Widget>[
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+              child: Text(
+                'Toutes les annonces :',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0),
+              ),
+            ),
+          ),
+          FutureBuilder(
+            future: ApiServices.getAnnonces(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  break;
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error: ${snapshot.error}"),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    final List<Annonce> annonces = snapshot.data;
+                    if (annonces.isEmpty) {
+                      return Center(
+                        child: Text("Empty list"),
+                      );
+                    }
+                    return SizedBox(
+                      height: 1000,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(500, 50, 500, 0),
+                        child: ListView.builder(
+                          itemCount: annonces.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return AnnonceItems(
+                              annonce: annonces[index],
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Text("No data"),
+                    );
+                  }
+                  break;
+                default:
+                  return Container();
+                  break;
+              }
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+
 
 /**class home extends StatelessWidget {
   home(this.jwt, this.payload);

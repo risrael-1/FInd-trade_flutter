@@ -7,11 +7,13 @@ import 'dart:convert' show json, base64, ascii;
 class AnnonceItems extends StatelessWidget {
     final Annonce annonce;
     final User user;
+    final String userToken;
 
     const AnnonceItems({
       Key key,
       this.annonce,
-      this.user
+      this.user,
+      this.userToken
     }) : super(key: key);
 
     @override
@@ -27,18 +29,16 @@ class AnnonceItems extends StatelessWidget {
           subtitle: Text(
             annonce.type,
           ),
-          trailing: IconButton(
-            icon: Icon(
-                Icons.delete,
-              color: Colors.red,
-            ),
-            onPressed: () {
-            },
-
-          )
         ),
         onPressed: () {
-          detailAnnonce(context, annonce);
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>
+                  DetailAnnonce(
+                    userAdmin: user,
+                    userToken: userToken,
+                    annonce: annonce,
+                  )
+          ));
         },
       ),
     );

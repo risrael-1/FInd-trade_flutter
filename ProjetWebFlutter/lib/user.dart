@@ -5,8 +5,9 @@ class User {
   final String email;
   final String status_user;
   final String phone;
+  final String token;
 
-  User(this.username, this.password, this.ville,this.email, this.status_user ,this.phone) ;
+  User(this.username, this.password, this.ville,this.email, this.status_user ,this.phone, this.token) ;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -16,6 +17,7 @@ class User {
         json["ville"],
         json["status_user"],
         json["phone"],
+        json['token']
     );
   }
 }
