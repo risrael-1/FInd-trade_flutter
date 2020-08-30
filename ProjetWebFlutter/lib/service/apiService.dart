@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import '../annonces.dart';
 import '../user.dart';
@@ -9,6 +10,8 @@ class ApiServices {
     final response =
     await http.get("https://next.json-generator.com/api/json/get/VJX9FVx1F");
     //await http.get("http://findandtrade.herokuapp.com/annonces/all");
+  //  await http.get("https://webhook.site/93e4dd43-1476-4b9e-b94a-5660681be525",
+
     if (response.statusCode != 200) {
       throw Error();
     }
@@ -21,26 +24,26 @@ class ApiServices {
     return annonceJSON.annonces;
   }
 
-  /**static Future<http.Response> createAnnonce(String title, String description, String category, String type) async {
-    final http.Response response = await http.post(
-      'https://webhook.site/030ccf56-c5cf-4890-b93b-2e3bf2a236a5',
-      headers: <String, String>{
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'title': title,
-        'description': description,
-        'category': category,
-        'type': type
-      })
-    );
-    if(response.statusCode == 201) {
-      return Annonce.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Erreur');
-    }
-  }**/
 
+
+
+  static Future<void> createAnnonce(
+      String title, String description, String loginUser) async {
+    final response = await http.put(
+      'https://webhook.site/93e4dd43-1476-4b9e-b94a-5660681be525',
+      headers: <String, String>{
+        'Content-Type': 'application/json', 'x-access-token' : '123456789'
+      },
+      body: jsonEncode(
+          <String, dynamic>{'title': title, 'description': description, 'username': loginUser}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Error();
+    }
+    final jsonBody = json.decode(response.body);
+    print(jsonBody);
+  }
 
   // signIn
   // Nous avons besoin du headers mettre le Content-Type

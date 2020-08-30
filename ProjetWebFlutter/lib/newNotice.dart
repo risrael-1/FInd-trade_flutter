@@ -1,8 +1,11 @@
+import 'package:ProjetWebFlutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:ProjetWebFlutter/profil.dart';
 import 'home.dart';
 import 'image.dart';
 import 'package:ProjetWebFlutter/user.dart';
+import 'service/apiService.dart';
+import 'package:material_segmented_control/material_segmented_control.dart';
 
 
 class NewNotice extends StatelessWidget {
@@ -23,10 +26,13 @@ class NewNotice extends StatelessWidget {
 
 
   Widget _buildContent(User user, String userToken, BuildContext context) {
-    TextEditingController labelAnnonce = TextEditingController();
+    TextEditingController title = TextEditingController();
     TextEditingController description = TextEditingController();
     TextEditingController categorie = TextEditingController();
     TextEditingController imageUrl = TextEditingController();
+    bool monVal = false;
+    bool tuVal = false;
+    bool wedVal = false;
     String type = "";
     List<String> _locations = ['Echanges', 'Dons']; // Option 2
     String _selectedLocation;
@@ -102,7 +108,7 @@ class NewNotice extends StatelessWidget {
             Container(
               padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
               child: TextField(
-                controller: labelAnnonce,
+                controller: title,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Titre',
@@ -118,29 +124,21 @@ class NewNotice extends StatelessWidget {
                     child: new Text(value),
                   );
                 }).toList(),
-                onChanged: (_) {},
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
-              child: TextField(
-                controller: categorie,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Catégorie de l\'annonce (Echanges/Dons)',
-                ),
+                onChanged: (String newValue) {
+                },
               ),
             ),
             Center(
               child: DropdownButton<String>(
                 hint: Text("Choisissez une categorie"),
-                items: <String>['Echanges', 'Dons'].map((String value) {
+                items: <String>['Animaux', 'Bricolage', 'Electroménager', 'Informatique', 'Instruments de Musique', 'Jardinage', 'Jeux & Jouets', 'Mobilier', 'Multimédia', 'Sport', 'Véhicules', 'Vêtements'].map((String value) {
                   return new DropdownMenuItem<String>(
                     value: value,
                     child: new Text(value),
                   );
                 }).toList(),
-                onChanged: (String newValue) {
+                onChanged: (String newvalue) {
+
                 },
               ),
             ),
@@ -175,10 +173,10 @@ class NewNotice extends StatelessWidget {
                       color: Colors.green,
                       child: Text('Ajouter'),
                       onPressed: () {
-                        print(labelAnnonce.text);
-                        print(categorie.text);
-                        print(description.text);
-                        print(imageUrl.text);
+                        print(title.text);
+                        ApiServices.createAnnonce(
+                            title.text, description.text,loginUser
+                        );
                       },
                     ),
                   )),

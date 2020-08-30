@@ -5,6 +5,7 @@ import 'newNotice.dart';
 import 'annonces.dart';
 import 'package:ProjetWebFlutter/user.dart';
 import 'main.dart';
+import 'package:ProjetWebFlutter/service/apiService.dart';
 
 class DetailAnnonce extends StatelessWidget {
   final User userAdmin;

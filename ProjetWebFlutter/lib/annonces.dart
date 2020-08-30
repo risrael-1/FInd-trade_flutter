@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+
 class AnnonceJSON {
 
   final String error;
@@ -23,6 +24,7 @@ class AnnonceJSON {
 class Annonce {
 
   final String _id;
+  final String id;
   final String userID;
   final String username;
   final String title;
@@ -33,7 +35,8 @@ class Annonce {
   final String photos;
   final String lastUpdatedAt;
 
-  Annonce(this._id, this.userID, this.username, this.title, this.description, this.category, this.type ,this.createdAt, this.photos, this.lastUpdatedAt) ;
+  Annonce(this._id,this.userID, this.username, this.title, this.description, this.category, this.type ,this.createdAt, this.photos, this.lastUpdatedAt, this.id);
+
 
   factory Annonce.fromJson(Map<String, dynamic> json) {
     return Annonce(
@@ -46,7 +49,8 @@ class Annonce {
         json["type"],
         json["createdAt"],
         json["photos"],
-        json["lastUpdatedAt"]
+        json["lastUpdatedAt"],
+        json["id"]
     );
   }
 }
