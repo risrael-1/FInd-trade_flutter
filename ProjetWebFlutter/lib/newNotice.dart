@@ -30,11 +30,12 @@ class NewNotice extends StatelessWidget {
     TextEditingController title = TextEditingController();
     TextEditingController description = TextEditingController();
     TextEditingController categorie = TextEditingController();
+    TextEditingController type = TextEditingController();
     TextEditingController imageUrl = TextEditingController();
     bool monVal = false;
     bool tuVal = false;
     bool wedVal = false;
-    String type = "";
+    //String type = "";
     List<String> _locations = ['Echanges', 'Dons']; // Option 2
     String _selectedLocation;
     return Scaffold(
@@ -116,6 +117,36 @@ class NewNotice extends StatelessWidget {
                 ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+              child: TextField(
+                controller: description,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Description',
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+              child: TextField(
+                controller: type,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Type',
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+              child: TextField(
+                controller: categorie,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Categorie',
+                ),
+              ),
+            ),
             Center(
               child: DropdownButton<String>(
                 hint: Text("Choisissez un type"),
@@ -142,16 +173,7 @@ class NewNotice extends StatelessWidget {
                 },
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
-              child: TextField(
-                controller: description,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Description',
-                ),
-              ),
-            ),
+
             Container(
               padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
               child: TextField(
@@ -165,7 +187,8 @@ class NewNotice extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(50),
               child: Container(
-                  height: 50,
+                  height: 70,
+                  width: 50,
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Center(
                     child: RaisedButton(
@@ -173,14 +196,14 @@ class NewNotice extends StatelessWidget {
                       color: Colors.green,
                       child: Text('Ajouter'),
                       onPressed: () {
-                        if(title.text == '' || description.text == ''){
+                        if(title.text == '' || description.text == '' || type.text == '' || categorie.text == '' || imageUrl.text == ''){
                           Fluttertoast.showToast(
                             msg: "Veuillez renseigner tous les champs",
                             timeInSecForIosWeb: 2,
                           );
                         } else {
                           ApiServices.createAnnonce(
-                              title.text, description.text,loginUser
+                              title.text, description.text, type.text, categorie.text, imageUrl.text, loginUser
                           );
                           Fluttertoast.showToast(
                             msg: "Votre annonce " + title.text + " à bien été publiée",
@@ -188,6 +211,9 @@ class NewNotice extends StatelessWidget {
                           );
                           title.text = '';
                           description.text = '';
+                          type.text = '';
+                          categorie.text = '';
+                          imageUrl.text = '';
                         }
                       },
                     ),

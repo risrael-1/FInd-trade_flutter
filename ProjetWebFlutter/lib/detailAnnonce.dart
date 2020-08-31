@@ -138,6 +138,8 @@ class DetailAnnonce extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: IconButton(
                         onPressed: () {
+                          print(annonce.id);
+                          ApiServices.deleteAnnonce(annonce.id);
                         },
                         icon: Icon(
                           Icons.delete,

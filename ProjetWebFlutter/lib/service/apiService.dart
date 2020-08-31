@@ -39,7 +39,7 @@ class ApiServices {
 
 
   static Future<void> createAnnonce(
-      String title, String description, String loginUser) async {
+      String title, String description, String type, String category, String photos, String loginUser) async {
     final response = await http.put(
       'https://findandtrade.herokuapp.com/annonces',
      // 'https://webhook.site/39c3d9a5-a5e1-451c-8bb0-8fe3775f89a1',
@@ -47,7 +47,23 @@ class ApiServices {
         'Content-Type': 'application/json', 'x-access-token' : JWT
       },
       body: jsonEncode(
-          <String, dynamic>{'title': title, 'description': description, 'username': loginUser, 'type': 'don', 'category':'Jardinage', 'photos': 'https://www.jardiner-malin.fr/wp-content/uploads/2020/03/Coronavirus-jardinage.jpg'}),
+          <String, dynamic>{'title': title, 'description': description, 'username': loginUser, 'type': type, 'category': category, 'photos': photos}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Error();
+    }
+    final jsonBody = json.decode(response.body);
+    print(jsonBody);
+  }
+
+  static Future<void> deleteAnnonce(String id) async {
+    final response = await http.delete(
+      //'https://findandtrade.herokuapp.com/annonces',
+      'https://webhook.site/5c467738-1b0e-4824-aea0-40ddba9e259e',
+      headers: <String, String>{
+        'Content-Type': 'application/json', 'x-access-token' :  'https://findandtrade.herokuapp.com/annonces/${id}',
+      },
     );
 
     if (response.statusCode != 200) {
