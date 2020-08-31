@@ -22,8 +22,8 @@ class AnnonceJSON {
 
 class Annonce {
 
-  final String _id;
-  final String id;
+  static String _id = '';
+  String id = _id;
   final String userID;
   final String username;
   final String title;
@@ -34,12 +34,12 @@ class Annonce {
   final String photos;
   final String lastUpdatedAt;
 
-  Annonce(this._id,this.userID, this.username, this.title, this.description, this.category, this.type ,this.createdAt, this.photos, this.lastUpdatedAt, this.id);
+  Annonce(this.id,this.userID, this.username, this.title, this.description, this.category, this.type ,this.createdAt, this.photos, this.lastUpdatedAt);
 
 
   factory Annonce.fromJson(Map<String, dynamic> json) {
     return Annonce(
-        json["_id"],
+        json["id"],
         json["userID"],
         json["username"],
         json["title"],
@@ -48,8 +48,7 @@ class Annonce {
         json["type"],
         json["createdAt"],
         json["photos"],
-        json["lastUpdatedAt"],
-        json["id"]
+        json["lastUpdatedAt"]
     );
   }
 }
