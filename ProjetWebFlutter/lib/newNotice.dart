@@ -1,6 +1,7 @@
 import 'package:ProjetWebFlutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:ProjetWebFlutter/profil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'home.dart';
 import 'image.dart';
 import 'package:ProjetWebFlutter/user.dart';
@@ -172,9 +173,22 @@ class NewNotice extends StatelessWidget {
                       color: Colors.green,
                       child: Text('Ajouter'),
                       onPressed: () {
-                        ApiServices.createAnnonce(
-                            title.text, description.text,loginUser
-                        );
+                        if(title.text == '' || description.text == ''){
+                          Fluttertoast.showToast(
+                            msg: "Veuillez renseigner tous les champs",
+                            timeInSecForIosWeb: 2,
+                          );
+                        } else {
+                          ApiServices.createAnnonce(
+                              title.text, description.text,loginUser
+                          );
+                          Fluttertoast.showToast(
+                            msg: "Votre annonce " + title.text + " à bien été publiée",
+                            timeInSecForIosWeb: 2,
+                          );
+                          title.text = '';
+                          description.text = '';
+                        }
                       },
                     ),
                   )),

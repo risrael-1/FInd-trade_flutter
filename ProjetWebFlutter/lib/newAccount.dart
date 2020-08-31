@@ -62,10 +62,10 @@ void newAccount(BuildContext context) {
                           onPressed: () {
                             if(nameController.text == "" || passwordController.text == ""){
                               Fluttertoast.showToast(
-                              msg: "Veuillez renseigner tous les champs",
-                               timeInSecForIosWeb: 2,
-                                 );
-                                 }
+                                msg: "Veuillez renseigner tous les champs",
+                                 timeInSecForIosWeb: 2,
+                               );
+                            }
                             else {
                               ApiServices.signup(
                                   nameController.text, passwordController.text

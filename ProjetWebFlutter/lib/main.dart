@@ -187,26 +187,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                 var logsuccess = ApiServices.loginsuccess;
 
                                 if (logsuccess){
-                                  String A = B;
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) =>
                                           HomePage(userToken: null, userAdmin: null)
                                   ));
+                                  Fluttertoast.showToast(
+                                    msg: B ,
+                                    timeInSecForIosWeb: 2,
+                                  );
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: A ,
+                                    timeInSecForIosWeb: 2,
+                                  );
                                 }
 
-                              });
 
-
-                              Timer(Duration(seconds: 2), () {
-
-                                var logsuccess = ApiServices.loginsuccess;
-                                if(logsuccess){
-                                 A = B;
-                                }
-                                Fluttertoast.showToast(
-                                  msg: A ,
-                                  timeInSecForIosWeb: 2,
-                                );
                               });
 
                             }

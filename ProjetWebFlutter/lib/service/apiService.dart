@@ -58,36 +58,36 @@ class ApiServices {
   }
 
   // signIn
-  static bool loginsuccess ;
+  static bool loginsuccess = false;
 
   static Future<void> login(
       String username, String password) async {
-    final response = await http.post(
-      'https://findandtrade.herokuapp.com/signin',
-      //'https://next.json-generator.com/api/json/get/V1TcjPyjd',
-      headers: <String, String>{
-        'Content-Type': 'application/json'
-      },
-      body: jsonEncode(
-          <String, dynamic>{'username': username, 'password': password}),
-    );
+        final response = await http.post(
+          'https://findandtrade.herokuapp.com/signin',
+          //'https://next.json-generator.com/api/json/get/V1TcjPyjd',
+          headers: <String, String>{
+            'Content-Type': 'application/json'
+          },
+          body: jsonEncode(
+              <String, dynamic>{'username': username, 'password': password}),
+        );
 
-    if (response.statusCode != 200) {
-      throw Error();
-    }
+        if (response.statusCode != 200) {
+          throw Error();
+        }
 
-    final jsonBody = json.decode(response.body);
-    final User token = User.fromJson(jsonBody);
-    final User error = User.fromJson(jsonBody);
+        final jsonBody = json.decode(response.body);
+        final User token = User.fromJson(jsonBody);
+        final User error = User.fromJson(jsonBody);
 
-    if (error.error == null){
-      loginsuccess = true;
-    }
-     else{
-      loginsuccess = false;
-    }
-    JWT = token.token;
-  }
+        if (error.error == null){
+          loginsuccess = true;
+        }
+         else{
+          loginsuccess = false;
+        }
+        JWT = token.token;
+      }
 
   static Future<void> signup(
       String username, String password) async {
