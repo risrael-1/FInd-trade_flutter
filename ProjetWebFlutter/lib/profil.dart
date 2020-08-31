@@ -1,9 +1,12 @@
 import 'package:ProjetWebFlutter/user.dart';
 import 'package:flutter/material.dart';
 import 'package:ProjetWebFlutter/newNotice.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'annonces.dart';
 import 'home.dart';
 import 'dart:html';
 import 'image.dart';
+import 'package:ProjetWebFlutter/service/apiService.dart';
 
 class ProfilPage extends StatelessWidget {
   final User userAdmin;
@@ -22,6 +25,10 @@ class ProfilPage extends StatelessWidget {
 
 
   Widget _buildContent(User user, String userToken, BuildContext context) {
+    TextEditingController email = TextEditingController();
+    TextEditingController phone = TextEditingController();
+    TextEditingController ville = TextEditingController();
+    TextEditingController typeUser = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -76,38 +83,88 @@ class ProfilPage extends StatelessWidget {
             )
           ],
         ),
-        body: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(100.0),
-                  child: Container(
-                    height: 290.0,
-                    width: 290.0,
-                    child: FloatingActionButton.extended(
-                      onPressed: () {
-                        startWebFilePicker();
-                      },
-                      icon: Icon(
-                        Icons.account_circle,
-                        size: 80,
-                      ),
-                      shape: RoundedRectangleBorder(),
-                      label: Text("Choisir une photo de profil"),
-                    ),
+        body: Padding(
+          padding: EdgeInsets.all(50),
+          child: ListView(
+            children: <Widget>[
+              Center(
+                child: Text(
+                    'Nom d\'utilisateur : ipad',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+                child: TextField(
+                  controller: phone,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Téléphone',
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(100.0),
-                  child: Text(
-                      "Information sur votre compte"
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+                child: TextField(
+                  controller: ville,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Ville',
                   ),
                 ),
-              ],
-            ),
-          ],
-        )
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+                child: TextField(
+                  controller: email,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(150, 30, 150, 20),
+                child: TextField(
+                  controller: typeUser,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Type d\'utilisateur',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(50),
+                child: Container(
+                    height: 70,
+                    width: 50,
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Center(
+                      child: RaisedButton(
+                        textColor: Colors.white,
+                        color: Colors.green,
+                        child: Text('Modifier'),
+                        onPressed: () {
+                          if(phone.text == '' || ville.text == '' || email.text == '' || typeUser.text == ''){
+                            Fluttertoast.showToast(
+                            msg: "Veuillez renseigner tous les champs",
+                            timeInSecForIosWeb: 2,
+                          );
+                          } else {
+                            print('username : ' + user.username);
+                            ApiServices.updateAnnonce(
+                                phone.text, ville.text, email.text,
+                                typeUser.text);
+                          }
+                        }
+                    )),
+                )),
+
+            ],
+          ),
+        ),
     );
   }
 }

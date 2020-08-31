@@ -123,7 +123,24 @@ class ApiServices {
 
   }
 
+  static Future<void> updateAnnonce(
+      String phone, String ville, String email, String status_user) async {
+    final response = await http.patch(
+      //'https://findandtrade.herokuapp.com/users',
+      'https://webhook.site/5c467738-1b0e-4824-aea0-40ddba9e259e',
+      headers: <String, String>{
+        'Content-Type': 'application/json', 'x-access-token' : JWT
+      },
+      body: jsonEncode(
+          <String, dynamic>{'phone': phone, 'ville': ville, 'email': email, 'type': status_user}),
+    );
 
+    if (response.statusCode != 200) {
+      throw Error();
+    }
+    final jsonBody = json.decode(response.body);
+    print(jsonBody);
+  }
 }
 
 
