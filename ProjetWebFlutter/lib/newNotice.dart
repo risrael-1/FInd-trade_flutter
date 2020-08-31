@@ -138,7 +138,6 @@ class NewNotice extends StatelessWidget {
                   );
                 }).toList(),
                 onChanged: (String newvalue) {
-
                 },
               ),
             ),
@@ -173,7 +172,6 @@ class NewNotice extends StatelessWidget {
                       color: Colors.green,
                       child: Text('Ajouter'),
                       onPressed: () {
-                        print(title.text);
                         ApiServices.createAnnonce(
                             title.text, description.text,loginUser
                         );

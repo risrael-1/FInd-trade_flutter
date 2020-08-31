@@ -10,7 +10,6 @@ class AnnonceJSON {
 
   factory AnnonceJSON.fromJson(Map<String, dynamic> json) {
     var list = json['annonces'] as List;
-    print(list.runtimeType);
     List<Annonce> annoncesList = list.map((i) => Annonce.fromJson(i)).toList();
 
     return AnnonceJSON(

@@ -158,19 +158,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Text('Valider'),
                           onPressed: () async {
                             if(nameController.text == "" || passwordController.text == ""){
-                              print("cestpasbon");
                               Fluttertoast.showToast(
                                 msg: "Veuillez renseigner tous les champs",
                                 timeInSecForIosWeb: 2,
                               );
                             }
                             else {
-                              print("cestpasbon");
                               loginUser = nameController.text;
-                              print("UserName = " + nameController.text);
-                              print("Password = " + passwordController.text);
-                              print(loginUser);
-
                               ApiServices.login(
                                   nameController.text, passwordController.text
                               );

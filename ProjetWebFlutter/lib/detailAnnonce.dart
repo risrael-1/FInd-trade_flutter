@@ -138,9 +138,6 @@ class DetailAnnonce extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: IconButton(
                         onPressed: () {
-                          print("delete");
-                          print(loginUser);
-                          print(annonce.username);
                         },
                         icon: Icon(
                           Icons.delete,
