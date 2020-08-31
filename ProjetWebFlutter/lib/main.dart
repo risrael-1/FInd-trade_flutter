@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         title: 'Find & Trade',
         theme: ThemeData(
           primarySwatch: Colors.green,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+       //   visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MyHomePage(
           title: 'Find & Trade',
@@ -170,6 +170,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               print("UserName = " + nameController.text);
                               print("Password = " + passwordController.text);
                               print(loginUser);
+
+                              ApiServices.login(
+                                  nameController.text, passwordController.text
+                              );
+
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
                                       HomePage(userToken: null, userAdmin: null)
