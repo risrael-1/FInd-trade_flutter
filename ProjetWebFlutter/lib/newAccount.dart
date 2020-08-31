@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'service/apiService.dart';
+
 void newAccount(BuildContext context) {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -58,14 +60,22 @@ void newAccount(BuildContext context) {
                           color: Colors.green,
                           child: Text('Valider'),
                           onPressed: () {
-                            print(nameController.text);
-                            print(passwordController.text);
-                            Navigator.pop(context, 'clc');
-                            Fluttertoast.showToast(
+                            if(nameController.text == "" || passwordController.text == ""){
+                              Fluttertoast.showToast(
+                              msg: "Veuillez renseigner tous les champs",
+                               timeInSecForIosWeb: 2,
+                                 );
+                                 }
+                            else {
+                              ApiServices.signup(
+                                  nameController.text, passwordController.text
+                              );
+                              Navigator.pop(context, 'clc');
+                              Fluttertoast.showToast(
                                 msg: "Vous vous êtes inscrit",
                                 timeInSecForIosWeb: 2,
-                            );
-
+                              );
+                            }
                           },
                         ),
                       )),

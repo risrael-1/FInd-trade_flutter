@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ProjetWebFlutter/service/apiService.dart';
 import 'package:ProjetWebFlutter/user.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show ascii, base64, json, jsonDecode;
+
+import 'service/apiService.dart';
+import 'service/apiService.dart';
+import 'service/apiService.dart';
+import 'service/apiService.dart';
+import 'service/apiService.dart';
+import 'service/apiService.dart';
 
 const SERVER_IP = 'http://findandtrade.herokuapp.com';
 final storage = FlutterSecureStorage();
@@ -169,28 +178,40 @@ class _MyHomePageState extends State<MyHomePage> {
                                   nameController.text, passwordController.text
                               );
 
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomePage(userToken: null, userAdmin: null)
-                              ));
+
+                              String A = "Connexion échouée veuillez verifier vos identifiants" ;
+                              String B = "Connexion réussie" ;
+
+                              Timer(Duration(seconds: 1), () {
+
+                                var logsuccess = ApiServices.loginsuccess;
+
+                                if (logsuccess){
+                                  String A = B;
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomePage(userToken: null, userAdmin: null)
+                                  ));
+                                }
+
+                              });
+
+
+                              Timer(Duration(seconds: 2), () {
+
+                                var logsuccess = ApiServices.loginsuccess;
+                                if(logsuccess){
+                                 A = B;
+                                }
+                                Fluttertoast.showToast(
+                                  msg: A ,
+                                  timeInSecForIosWeb: 2,
+                                );
+                              });
+
                             }
                             //logIn(context, nameController, passwordController);
-                            /**var username = nameController.text;
-                            var password = passwordController.text;
 
-                            var jwt = await attemptLogIn(username, password);
-                            if(jwt != null) {
-                              storage.write(key: "jwt", value: jwt);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => home.fromBase64(jwt)
-                                )
-                              );
-
-                            } else {
-                              displayDialog(context, "Une erreur est survenue", "Aucun compte n'a été trouver");
-                            }**/
                           },
                         ),
                       )),
@@ -216,20 +237,4 @@ class _MyHomePageState extends State<MyHomePage> {
             )));
   }
 
-  Future<bool> logIn(
-      BuildContext context,
-      TextEditingController _usernameController,
-      TextEditingController _passwordController) async {
-    String tokenUser = await ApiServices.connectProfile(
-        _usernameController.text, _passwordController.text);
-    User user = await ApiServices.fetchProfile(
-        jsonDecode(tokenUser)['token'].toString());
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(
-                userAdmin: user,
-                userToken: jsonDecode(tokenUser)['token'].toString())),
-      );
-  }
 }
